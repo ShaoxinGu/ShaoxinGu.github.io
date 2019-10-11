@@ -29,7 +29,7 @@
 <meta property="og:site_name" content="Philip&#39;s Blog">
 <meta property="og:description" content="应用阶段把数据加载到显存中 所有渲染所需的数据都需要从硬盘（Hard Disk Drive，HDD）中加载到系统内存（Random Access Memory，RAM）中。然后，网格和纹理等数据又被加载到显卡上的存储空间——显存（Video Random Access Memory， VRAM）中。这是因为，显卡对于显存的访问更快，而且大多数显卡对于RAM没有直接的访问权利。  渲染所需的数据除了">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-11T10:54:38.866Z">
+<meta property="og:updated_time" content="2019-10-11T15:19:26.880Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="UnityShader笔记【一】">
 <meta name="twitter:description" content="应用阶段把数据加载到显存中 所有渲染所需的数据都需要从硬盘（Hard Disk Drive，HDD）中加载到系统内存（Random Access Memory，RAM）中。然后，网格和纹理等数据又被加载到显卡上的存储空间——显存（Video Random Access Memory， VRAM）中。这是因为，显卡对于显存的访问更快，而且大多数显卡对于RAM没有直接的访问权利。  渲染所需的数据除了">
@@ -145,7 +145,7 @@
         <h1 class="title">UnityShader笔记【一】</h1>
         <h5 class="subtitle">
             
-                <time datetime="2019-10-11T10:54:38.866Z" itemprop="datePublished" class="page-time">
+                <time datetime="2019-10-11T15:19:26.880Z" itemprop="datePublished" class="page-time">
   2019-10-11
 </time>
 
@@ -167,7 +167,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#应用阶段"><span class="post-toc-number">1.</span> <span class="post-toc-text">应用阶段</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#把数据加载到显存中"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">把数据加载到显存中</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#设置渲染状态"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">设置渲染状态</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#调用DrawCall"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">调用DrawCall</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#几何阶段"><span class="post-toc-number">2.</span> <span class="post-toc-text">几何阶段</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#顶点着色器（Vertex-Shader）"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">顶点着色器（Vertex Shader）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#裁剪（Clipping）"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">裁剪（Clipping）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#屏幕映射（Screen-Mapping）"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">屏幕映射（Screen Mapping）</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#光栅化阶段"><span class="post-toc-number">3.</span> <span class="post-toc-text">光栅化阶段</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#三角形设置"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">三角形设置</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#三角形遍历"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">三角形遍历</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#片元着色器"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">片元着色器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#逐片元操作"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">逐片元操作</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#生成屏幕图像"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">生成屏幕图像</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#应用阶段"><span class="post-toc-number">1.</span> <span class="post-toc-text">应用阶段</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#把数据加载到显存中"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">把数据加载到显存中</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#设置渲染状态"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">设置渲染状态</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#调用DrawCall"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">调用DrawCall</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#几何阶段"><span class="post-toc-number">2.</span> <span class="post-toc-text">几何阶段</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#顶点着色器（Vertex-Shader）"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">顶点着色器（Vertex Shader）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#几何-曲面细分着色器"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">几何/曲面细分着色器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#裁剪（Clipping）"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">裁剪（Clipping）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#屏幕映射（Screen-Mapping）"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">屏幕映射（Screen Mapping）</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#光栅化阶段"><span class="post-toc-number">3.</span> <span class="post-toc-text">光栅化阶段</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#三角形设置（Triangle-Setup）"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">三角形设置（Triangle Setup）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#三角形遍历（Triangle-Traversal）"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">三角形遍历（Triangle Traversal）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#片元着色器（Fragment-Shader）"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">片元着色器（Fragment Shader）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#逐片元操作（Per-Fragment-Operations）"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">逐片元操作（Per-Fragment Operations）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#生成屏幕图像"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">生成屏幕图像</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -178,7 +178,7 @@
     <div class="post-card">
         <h1 class="post-card-title">UnityShader笔记【一】</h1>
         <div class="post-meta">
-            <time class="post-time" title="2019-10-11 18:54:38" datetime="2019-10-11T10:54:38.866Z"  itemprop="datePublished">2019-10-11</time>
+            <time class="post-time" title="2019-10-11 23:19:26" datetime="2019-10-11T15:19:26.880Z"  itemprop="datePublished">2019-10-11</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
@@ -214,19 +214,20 @@
 <li><p>另外，CPU和GPU是并行工作的，通过一个命令缓冲区（可以理解为队列）来实现，CPU向命令缓冲区中添加命令，GPU向命令缓冲区读取命令。</p>
 </li>
 </ul>
-<h1 id="几何阶段"><a href="#几何阶段" class="headerlink" title="几何阶段"></a>几何阶段</h1><h2 id="顶点着色器（Vertex-Shader）"><a href="#顶点着色器（Vertex-Shader）" class="headerlink" title="顶点着色器（Vertex Shader）"></a>顶点着色器（Vertex Shader）</h2><ul>
-<li><p>顶点着色器是完全可编程的，它通常用于实现顶点的空间变换、顶点着色等功能。</p>
-</li>
-<li><p>顶点着色器是流水线的第一个阶段，它的输入来自于CPU。顶点着色器的处理单位是顶点，也就是说，输入进来的每个顶点都会调用一次顶点着色器。顶点着色器本身不可以创建或者销毁任何顶点，而且无法得到顶点与顶点之间的关系。例如，我们无法得知两个顶点是否属于同一个三角网格。但正是因为这样的相互独立性，GPU可以利用本身的特征并行化处理每一个顶点，这意味着这一阶段的处理速度会很快。</p>
-</li>
-<li><p>顶点着色器需要完成的工作主要有：坐标变换和逐顶点光照。</p>
-</li>
-<li><p>坐标变换，顾名思义，就是对顶点的坐标（即位置）进行某种变换。顶点着色器可以在这一步中改变顶点的位置，这在顶点动画中是非常有用的。例如，我们可以通过改变顶点位置来模拟水面、布料等。但需要注意的是，无论我们在顶点着色器中怎样改变顶点的位置，一个最基本的顶点着色器必须完成的一个工作是，把顶点坐标从模型空间转换到齐次裁剪空间。</p>
-</li>
-<li><p><code>旧版Unity</code>使用<code>o.vertex = mul(UNITY_MVP, v.vertex);</code>来完成顶点变换，而<code>新版Unity</code>使用<code>o.vertex = UnityObjectToClipPos(v.vertex);</code>来实现顶点变换。其功能就是把顶点坐标转换到齐次裁剪坐标系下，接着通常再由硬件做透视除法后，最终得到归一化的设备坐标（Nomalized Device Coordinates, NDC)。</p>
-</li>
-<li><p>顶点着色器可以有不同的输出方式。最常见的输出路径是经光栅化后交给片元着色器进行处理。而在现代的Shader Model中，它还可以把数据发送给曲面细分着色器或几何着色器。</p>
-</li>
+<h1 id="几何阶段"><a href="#几何阶段" class="headerlink" title="几何阶段"></a>几何阶段</h1><blockquote>
+<p>在这个阶段，顶点将经历以下几个阶段：</p>
+<p><strong>模型坐标系</strong> -&gt; 模型变换 -&gt; <strong>世界坐标系</strong>  -&gt; 视图变换 -&gt; <strong>观察坐标系</strong> -&gt; 投影变换 -&gt; <strong>规范化的观察空间</strong> -&gt; 屏幕映射 -&gt; <strong>屏幕坐标系</strong></p>
+</blockquote>
+<h2 id="顶点着色器（Vertex-Shader）"><a href="#顶点着色器（Vertex-Shader）" class="headerlink" title="顶点着色器（Vertex Shader）"></a>顶点着色器（Vertex Shader）</h2><ul>
+<li>顶点着色器是完全可编程的，它通常用于实现顶点的空间变换、顶点着色等功能。</li>
+<li>顶点着色器是流水线的第一个阶段，它的输入来自于CPU。顶点着色器的处理单位是顶点，也就是说，输入进来的每个顶点都会调用一次顶点着色器。顶点着色器本身不可以创建或者销毁任何顶点，而且无法得到顶点与顶点之间的关系。例如，我们无法得知两个顶点是否属于同一个三角网格。但正是因为这样的相互独立性，GPU可以利用本身的特征并行化处理每一个顶点，这意味着这一阶段的处理速度会很快。</li>
+<li>顶点着色器需要完成的工作主要有：坐标变换和逐顶点光照。</li>
+<li>坐标变换，顾名思义，就是对顶点的坐标（即位置）进行某种变换。顶点着色器可以在这一步中改变顶点的位置，这在顶点动画中是非常有用的。例如，我们可以通过改变顶点位置来模拟水面、布料等。但需要注意的是，无论我们在顶点着色器中怎样改变顶点的位置，一个最基本的顶点着色器必须完成的一个工作是，把顶点坐标从模型空间转换到齐次裁剪空间。</li>
+<li><code>旧版Unity</code>使用<code>o.vertex = mul(UNITY_MVP, v.vertex);</code>来完成顶点变换，而<code>新版Unity</code>使用<code>o.vertex = UnityObjectToClipPos(v.vertex);</code>来实现顶点变换。其功能就是把顶点坐标转换到齐次裁剪坐标系下，接着通常再由硬件做透视除法后，最终得到归一化的设备坐标（Nomalized Device Coordinates, NDC)。</li>
+<li>顶点着色器可以有不同的输出方式。最常见的输出路径是经光栅化后交给片元着色器进行处理。而在现代的Shader Model中，它还可以把数据发送给曲面细分着色器或几何着色器。</li>
+</ul>
+<h2 id="几何-曲面细分着色器"><a href="#几何-曲面细分着色器" class="headerlink" title="几何/曲面细分着色器"></a>几何/曲面细分着色器</h2><ul>
+<li>几何/曲面细分着色器是一个可选的操作，它的输入是顶点数据。它可以对图元的顶点进行操作，它可以高效地创建和删除几何图元。也可以通过增加顶点，让现有的多边形网格更加逼近曲面，也就是所谓的曲面细分。</li>
 </ul>
 <h2 id="裁剪（Clipping）"><a href="#裁剪（Clipping）" class="headerlink" title="裁剪（Clipping）"></a>裁剪（Clipping）</h2><ul>
 <li><p>由于我们的场景可能会很大，而摄像机的视野范围很有可能不会覆盖所有的场景物体，一个很自然的想法就是，那些不在摄像机视野范围内的物体不需要被处理。而裁剪就是为了完成这个目的而被提出来。</p>
@@ -242,7 +243,27 @@
 <li><p>屏幕坐标系和z坐标一起构成了一个坐标系，叫做窗口坐标系（Window Coordinates）。这些值会一起被传递到光栅化阶段。</p>
 </li>
 </ul>
-<h1 id="光栅化阶段"><a href="#光栅化阶段" class="headerlink" title="光栅化阶段"></a>光栅化阶段</h1><h2 id="三角形设置"><a href="#三角形设置" class="headerlink" title="三角形设置"></a>三角形设置</h2><h2 id="三角形遍历"><a href="#三角形遍历" class="headerlink" title="三角形遍历"></a>三角形遍历</h2><h2 id="片元着色器"><a href="#片元着色器" class="headerlink" title="片元着色器"></a>片元着色器</h2><h2 id="逐片元操作"><a href="#逐片元操作" class="headerlink" title="逐片元操作"></a>逐片元操作</h2><h2 id="生成屏幕图像"><a href="#生成屏幕图像" class="headerlink" title="生成屏幕图像"></a>生成屏幕图像</h2>
+<h1 id="光栅化阶段"><a href="#光栅化阶段" class="headerlink" title="光栅化阶段"></a>光栅化阶段</h1><h2 id="三角形设置（Triangle-Setup）"><a href="#三角形设置（Triangle-Setup）" class="headerlink" title="三角形设置（Triangle Setup）"></a>三角形设置（Triangle Setup）</h2><ul>
+<li>将几何阶段传过来的顶点数据进行处理，将顶点连成三角网格。</li>
+</ul>
+<h2 id="三角形遍历（Triangle-Traversal）"><a href="#三角形遍历（Triangle-Traversal）" class="headerlink" title="三角形遍历（Triangle Traversal）"></a>三角形遍历（Triangle Traversal）</h2><ul>
+<li>三角形遍历的输入就是三角形设置的结果。</li>
+<li>根据顶点信息，计算得到覆盖三角网格的像素位置，对于的这些像素就生成一个片元（fragment）。</li>
+<li>而片元中每个像素的状态都是对三个顶点的信息进行插值得到的。</li>
+</ul>
+<h2 id="片元着色器（Fragment-Shader）"><a href="#片元着色器（Fragment-Shader）" class="headerlink" title="片元着色器（Fragment Shader）"></a>片元着色器（Fragment Shader）</h2><ul>
+<li>这是一个可编程的阶段</li>
+<li>根据之前的片元信息，计算每个片元的颜色值。</li>
+<li>这个阶段可以完成很多重要的渲染技术，比如纹理贴图。</li>
+</ul>
+<h2 id="逐片元操作（Per-Fragment-Operations）"><a href="#逐片元操作（Per-Fragment-Operations）" class="headerlink" title="逐片元操作（Per-Fragment Operations）"></a>逐片元操作（Per-Fragment Operations）</h2><ul>
+<li>在DirectX中又叫做输出合并阶段（Output-Merger）。</li>
+<li>这里将每个片元的深度和颜色与帧缓存结合在一起。每个像素的颜色都是混合的结果。</li>
+</ul>
+<h2 id="生成屏幕图像"><a href="#生成屏幕图像" class="headerlink" title="生成屏幕图像"></a>生成屏幕图像</h2><ul>
+<li>显示图像！</li>
+</ul>
+
         </div>
 
         <blockquote class="post-copyright">
@@ -250,7 +271,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-10-11T10:54:38.866Z" itemprop="dateUpdated">2019-10-11 18:54:38</time>
+    最后更新时间：<time datetime="2019-10-11T15:19:26.880Z" itemprop="dateUpdated">2019-10-11 23:19:26</time>
 </span><br>
 
 
