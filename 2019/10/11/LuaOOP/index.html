@@ -21,18 +21,18 @@
     
     
     <meta name="keywords" content="Lua">
-    <meta name="description" content="Lua实现面向对象概述以下描述出自《Program in Lua》中文版：  ​        一些面向对象的语言中提供了类的概念，作为创建对象的模板。在这些语言里，对象是类的实例。Lua 不存在类的概念，每个对象定义他自己的行为并拥有自己的形状（shape）。然而，依据基于原型（prototype）的语言比如 Self 和 NewtonScript，在 Lua中仿效类的概念并不难。在这些语言中，">
+    <meta name="description" content="概述以下描述出自《Program in Lua》中文版：  ​        一些面向对象的语言中提供了类的概念，作为创建对象的模板。在这些语言里，对象是类的实例。Lua 不存在类的概念，每个对象定义他自己的行为并拥有自己的形状（shape）。然而，依据基于原型（prototype）的语言比如 Self 和 NewtonScript，在 Lua中仿效类的概念并不难。在这些语言中，对象没有类。相反，">
 <meta name="keywords" content="Lua">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Lua实现面向对象">
 <meta property="og:url" content="https://shaoxingu.github.io/2019/10/11/LuaOOP/index.html">
 <meta property="og:site_name" content="Philip&#39;s Blog">
-<meta property="og:description" content="Lua实现面向对象概述以下描述出自《Program in Lua》中文版：  ​        一些面向对象的语言中提供了类的概念，作为创建对象的模板。在这些语言里，对象是类的实例。Lua 不存在类的概念，每个对象定义他自己的行为并拥有自己的形状（shape）。然而，依据基于原型（prototype）的语言比如 Self 和 NewtonScript，在 Lua中仿效类的概念并不难。在这些语言中，">
+<meta property="og:description" content="概述以下描述出自《Program in Lua》中文版：  ​        一些面向对象的语言中提供了类的概念，作为创建对象的模板。在这些语言里，对象是类的实例。Lua 不存在类的概念，每个对象定义他自己的行为并拥有自己的形状（shape）。然而，依据基于原型（prototype）的语言比如 Self 和 NewtonScript，在 Lua中仿效类的概念并不难。在这些语言中，对象没有类。相反，">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-11T04:46:51.788Z">
+<meta property="og:updated_time" content="2019-10-11T04:50:06.136Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Lua实现面向对象">
-<meta name="twitter:description" content="Lua实现面向对象概述以下描述出自《Program in Lua》中文版：  ​        一些面向对象的语言中提供了类的概念，作为创建对象的模板。在这些语言里，对象是类的实例。Lua 不存在类的概念，每个对象定义他自己的行为并拥有自己的形状（shape）。然而，依据基于原型（prototype）的语言比如 Self 和 NewtonScript，在 Lua中仿效类的概念并不难。在这些语言中，">
+<meta name="twitter:description" content="概述以下描述出自《Program in Lua》中文版：  ​        一些面向对象的语言中提供了类的概念，作为创建对象的模板。在这些语言里，对象是类的实例。Lua 不存在类的概念，每个对象定义他自己的行为并拥有自己的形状（shape）。然而，依据基于原型（prototype）的语言比如 Self 和 NewtonScript，在 Lua中仿效类的概念并不难。在这些语言中，对象没有类。相反，">
     
         <link rel="alternate" type="application/atom+xml" title="Philip&#39;s Blog" href="/atom.xml">
     
@@ -138,7 +138,7 @@
         <h1 class="title">Lua实现面向对象</h1>
         <h5 class="subtitle">
             
-                <time datetime="2019-10-11T04:46:51.788Z" itemprop="datePublished" class="page-time">
+                <time datetime="2019-10-11T04:50:06.136Z" itemprop="datePublished" class="page-time">
   2019-10-11
 </time>
 
@@ -160,7 +160,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Lua实现面向对象"><span class="post-toc-number">1.</span> <span class="post-toc-text">Lua实现面向对象</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#概述"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">概述</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方案一"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">方案一</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方案二"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">方案二</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#概述"><span class="post-toc-number">1.</span> <span class="post-toc-text">概述</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方案一"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">方案一</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方案二"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">方案二</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -171,7 +171,7 @@
     <div class="post-card">
         <h1 class="post-card-title">Lua实现面向对象</h1>
         <div class="post-meta">
-            <time class="post-time" title="2019-10-11 12:46:51" datetime="2019-10-11T04:46:51.788Z"  itemprop="datePublished">2019-10-11</time>
+            <time class="post-time" title="2019-10-11 12:50:06" datetime="2019-10-11T04:50:06.136Z"  itemprop="datePublished">2019-10-11</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
@@ -186,7 +186,7 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <h1 id="Lua实现面向对象"><a href="#Lua实现面向对象" class="headerlink" title="Lua实现面向对象"></a>Lua实现面向对象</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>以下描述出自《Program in Lua》中文版：</p>
+            <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>以下描述出自《Program in Lua》中文版：</p>
 <blockquote>
 <p>​        一些面向对象的语言中提供了类的概念，作为创建对象的模板。在这些语言里，对象是类的实例。Lua 不存在类的概念，每个对象定义他自己的行为并拥有自己的形状（shape）。然而，依据基于原型（prototype）的语言比如 Self 和 NewtonScript，在 Lua中仿效类的概念并不难。在这些语言中，对象没有类。相反，每个对象都有一个 prototype（原型），当调用不属于对象的某些操作时，会最先会到 prototype 中查找这些操作。在这类语言中实现类（class）的机制，我们创建一个对象，作为其它对象的原型即可（原型对象为类，其它对象为类的 instance）。类与 prototype 的工作机制相同，都是定义了特定对象的行为。</p>
 </blockquote>
@@ -213,7 +213,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-10-11T04:46:51.788Z" itemprop="dateUpdated">2019-10-11 12:46:51</time>
+    最后更新时间：<time datetime="2019-10-11T04:50:06.136Z" itemprop="dateUpdated">2019-10-11 12:50:06</time>
 </span><br>
 
 
