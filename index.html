@@ -156,7 +156,7 @@
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2019-10-11 10:35:33" datetime="2019-10-11T02:35:33.097Z"  itemprop="datePublished">2019-10-11</time>
+        <time class="post-time" title="2019-10-11 12:46:51" datetime="2019-10-11T04:46:51.788Z"  itemprop="datePublished">2019-10-11</time>
 
         
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
@@ -170,7 +170,7 @@
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2019/10/11/LuaOOP/">lua的面向对象</a>
+      <a class="post-title-link" href="/2019/10/11/LuaOOP/">Lua实现面向对象</a>
     </h3>
   
 
@@ -180,8 +180,9 @@
     <div class="post-content" id="post-content" itemprop="postContent">
 
     
-        概述Lua中并没有严格意义上的类和对象的概念，但是可以利用Lua的metatable来模拟类和对象。Lua的作者在PIL中推荐了一种实现LuaOO的方案，这种方案很简单也很容易理解。在lua里，类和实例都是table。在继承或实例化的时候，类会将自己设置为实例或子类的metatable。这样当实例或子类在索引不到某个属性或方法的时候，会调用metatable的__index元方法，也就是查找父类的方法。核心代码其实就这几行：
-1234567class = &#123;&#125;function class:new (o)    o = o or &#123;&#125;   -- cr...
+        Lua实现面向对象概述以下描述出自《Program in Lua》中文版：
+
+​        一些面向对象的语言中提供了类的概念，作为创建对象的模板。在这些语言里，对象是类的实例。Lua 不存在类的概念，每个对象定义他自己的行为并拥有自己的形状（shape）。然而，依据基于原型（prototype）的语言比如 Self 和 NewtonScript，在 Lua中仿效类的概念并不难。在这些语言中，对象没有类。相反，每个对象都有一个 prototype（原型），当调用不属于对象的某些操作时，会最先会到 prototype 中查找这些操作。在这类语言中实现类（class）的机制，我们创建一个...
     
 
         <a href="/2019/10/11/LuaOOP/" class="post-more waves-effect waves-button">
@@ -204,7 +205,7 @@
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2019-10-11 10:35:33" datetime="2019-10-11T02:35:33.097Z"  itemprop="datePublished">2019-10-11</time>
+        <time class="post-time" title="2019-10-11 12:46:51" datetime="2019-10-11T04:46:51.788Z"  itemprop="datePublished">2019-10-11</time>
 
         
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
@@ -256,7 +257,7 @@
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2019-10-11 10:35:33" datetime="2019-10-11T02:35:33.097Z"  itemprop="datePublished">2019-10-11</time>
+        <time class="post-time" title="2019-10-11 12:46:51" datetime="2019-10-11T04:46:51.788Z"  itemprop="datePublished">2019-10-11</time>
 
         
 

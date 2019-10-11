@@ -14,25 +14,25 @@
     
     
     
-    <title>lua的面向对象 | Philip&#39;s Blog | 醉醉的博客</title>
+    <title>Lua实现面向对象 | Philip&#39;s Blog | 醉醉的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
     
     
     <meta name="keywords" content="Lua">
-    <meta name="description" content="概述Lua中并没有严格意义上的类和对象的概念，但是可以利用Lua的metatable来模拟类和对象。Lua的作者在PIL中推荐了一种实现LuaOO的方案，这种方案很简单也很容易理解。在lua里，类和实例都是table。在继承或实例化的时候，类会将自己设置为实例或子类的metatable。这样当实例或子类在索引不到某个属性或方法的时候，会调用metatable的__index元方法，也就是查找父类的">
+    <meta name="description" content="Lua实现面向对象概述以下描述出自《Program in Lua》中文版：  ​        一些面向对象的语言中提供了类的概念，作为创建对象的模板。在这些语言里，对象是类的实例。Lua 不存在类的概念，每个对象定义他自己的行为并拥有自己的形状（shape）。然而，依据基于原型（prototype）的语言比如 Self 和 NewtonScript，在 Lua中仿效类的概念并不难。在这些语言中，">
 <meta name="keywords" content="Lua">
 <meta property="og:type" content="article">
-<meta property="og:title" content="lua的面向对象">
+<meta property="og:title" content="Lua实现面向对象">
 <meta property="og:url" content="https://shaoxingu.github.io/2019/10/11/LuaOOP/index.html">
 <meta property="og:site_name" content="Philip&#39;s Blog">
-<meta property="og:description" content="概述Lua中并没有严格意义上的类和对象的概念，但是可以利用Lua的metatable来模拟类和对象。Lua的作者在PIL中推荐了一种实现LuaOO的方案，这种方案很简单也很容易理解。在lua里，类和实例都是table。在继承或实例化的时候，类会将自己设置为实例或子类的metatable。这样当实例或子类在索引不到某个属性或方法的时候，会调用metatable的__index元方法，也就是查找父类的">
+<meta property="og:description" content="Lua实现面向对象概述以下描述出自《Program in Lua》中文版：  ​        一些面向对象的语言中提供了类的概念，作为创建对象的模板。在这些语言里，对象是类的实例。Lua 不存在类的概念，每个对象定义他自己的行为并拥有自己的形状（shape）。然而，依据基于原型（prototype）的语言比如 Self 和 NewtonScript，在 Lua中仿效类的概念并不难。在这些语言中，">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-11T02:35:33.097Z">
+<meta property="og:updated_time" content="2019-10-11T04:46:51.788Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="lua的面向对象">
-<meta name="twitter:description" content="概述Lua中并没有严格意义上的类和对象的概念，但是可以利用Lua的metatable来模拟类和对象。Lua的作者在PIL中推荐了一种实现LuaOO的方案，这种方案很简单也很容易理解。在lua里，类和实例都是table。在继承或实例化的时候，类会将自己设置为实例或子类的metatable。这样当实例或子类在索引不到某个属性或方法的时候，会调用metatable的__index元方法，也就是查找父类的">
+<meta name="twitter:title" content="Lua实现面向对象">
+<meta name="twitter:description" content="Lua实现面向对象概述以下描述出自《Program in Lua》中文版：  ​        一些面向对象的语言中提供了类的概念，作为创建对象的模板。在这些语言里，对象是类的实例。Lua 不存在类的概念，每个对象定义他自己的行为并拥有自己的形状（shape）。然而，依据基于原型（prototype）的语言比如 Self 和 NewtonScript，在 Lua中仿效类的概念并不难。在这些语言中，">
     
         <link rel="alternate" type="application/atom+xml" title="Philip&#39;s Blog" href="/atom.xml">
     
@@ -113,7 +113,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">lua的面向对象</div>
+        <div class="flex-col header-title ellipsis">Lua实现面向对象</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -135,10 +135,10 @@
 <header class="content-header post-header">
 
     <div class="container fade-scale">
-        <h1 class="title">lua的面向对象</h1>
+        <h1 class="title">Lua实现面向对象</h1>
         <h5 class="subtitle">
             
-                <time datetime="2019-10-11T02:35:33.097Z" itemprop="datePublished" class="page-time">
+                <time datetime="2019-10-11T04:46:51.788Z" itemprop="datePublished" class="page-time">
   2019-10-11
 </time>
 
@@ -160,7 +160,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#概述"><span class="post-toc-number">1.</span> <span class="post-toc-text">概述</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Lua实现面向对象"><span class="post-toc-number">1.</span> <span class="post-toc-text">Lua实现面向对象</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#概述"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">概述</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方案一"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">方案一</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方案二"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">方案二</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -169,9 +169,9 @@
   class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
-        <h1 class="post-card-title">lua的面向对象</h1>
+        <h1 class="post-card-title">Lua实现面向对象</h1>
         <div class="post-meta">
-            <time class="post-time" title="2019-10-11 10:35:33" datetime="2019-10-11T02:35:33.097Z"  itemprop="datePublished">2019-10-11</time>
+            <time class="post-time" title="2019-10-11 12:46:51" datetime="2019-10-11T04:46:51.788Z"  itemprop="datePublished">2019-10-11</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
@@ -186,13 +186,25 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Lua中并没有严格意义上的类和对象的概念，但是可以利用Lua的metatable来模拟类和对象。<br>Lua的作者在PIL中推荐了<a href="http://www.lua.org/pil/16.html" target="_blank" rel="noopener">一种实现LuaOO的方案</a>，这种方案很简单也很容易理解。<br>在lua里，类和实例都是table。在继承或实例化的时候，类会将自己设置为实例或子类的metatable。这样当实例或子类在索引不到某个属性或方法的时候，会调用metatable的__index元方法，也就是查找父类的方法。核心代码其实就这几行：</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class = &#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">class:new</span> <span class="params">(o)</span></span></span><br><span class="line">    o = o <span class="keyword">or</span> &#123;&#125;   <span class="comment">-- create object if user does not provide one</span></span><br><span class="line">    <span class="built_in">setmetatable</span>(o, self)</span><br><span class="line">    self.<span class="built_in">__index</span> = self</span><br><span class="line">    <span class="keyword">return</span> o</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+            <h1 id="Lua实现面向对象"><a href="#Lua实现面向对象" class="headerlink" title="Lua实现面向对象"></a>Lua实现面向对象</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>以下描述出自《Program in Lua》中文版：</p>
+<blockquote>
+<p>​        一些面向对象的语言中提供了类的概念，作为创建对象的模板。在这些语言里，对象是类的实例。Lua 不存在类的概念，每个对象定义他自己的行为并拥有自己的形状（shape）。然而，依据基于原型（prototype）的语言比如 Self 和 NewtonScript，在 Lua中仿效类的概念并不难。在这些语言中，对象没有类。相反，每个对象都有一个 prototype（原型），当调用不属于对象的某些操作时，会最先会到 prototype 中查找这些操作。在这类语言中实现类（class）的机制，我们创建一个对象，作为其它对象的原型即可（原型对象为类，其它对象为类的 instance）。类与 prototype 的工作机制相同，都是定义了特定对象的行为。</p>
+</blockquote>
+<h2 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h2><p>Lua的作者之一<a href="https://en.wikipedia.org/wiki/Roberto_Ierusalimschy" target="_blank" rel="noopener">Roberto Lerusalimschy</a>在《Program in Lua》书中推荐了<a href="http://www.lua.org/pil/16.html" target="_blank" rel="noopener">一种实现LuaOO的方案</a>，这种方案很简单也很容易理解。</p>
+<p>在Lua里，类和实例都是table。在继承或实例化的时候，类会被赋值给实例或子类metatable的__index。</p>
+<p>核心代码其实就这几行：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Class = &#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Class:new</span> <span class="params">(o)</span></span></span><br><span class="line">    o = o <span class="keyword">or</span> &#123;&#125;   <span class="comment">-- create object if user does not provide one</span></span><br><span class="line">    <span class="built_in">setmetatable</span>(o, self)</span><br><span class="line">    self.<span class="built_in">__index</span> = self</span><br><span class="line">    <span class="keyword">return</span> o</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 
 <p>具体的案例如下：</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Base = &#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Base:new</span> <span class="params">(o)</span></span></span><br><span class="line">    o = o <span class="keyword">or</span> &#123;&#125;   <span class="comment">-- create object if user does not provide one</span></span><br><span class="line">    <span class="built_in">setmetatable</span>(o, self)</span><br><span class="line">    self.<span class="built_in">__index</span> = self</span><br><span class="line">    <span class="keyword">return</span> o</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Base:Test1</span><span class="params">()</span></span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Base Test1"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Base:Test2</span><span class="params">()</span></span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Base Test2"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--Child既可以说是Base类的实例，也可以说是Base类的子类</span></span><br><span class="line">Child = Base:new()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Child:Test1</span><span class="params">()</span></span> <span class="comment">--Child重写了Test1方法</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Child Test1"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> a = Base:new()    <span class="comment">--生成一个Base类的实例</span></span><br><span class="line">a:Test1()               <span class="comment">--将打印"Base Test1"</span></span><br><span class="line">a:Test2()               <span class="comment">--将打印"Base Test2"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> b = Child:new()   <span class="comment">--生成一个Child类的实例</span></span><br><span class="line">b:Test1()               <span class="comment">--将打印"Child Test1"</span></span><br><span class="line">b:Test2()               <span class="comment">--将打印"Base Test2",调用的是父类的方法</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Base = &#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Base:new</span> <span class="params">(o)</span></span></span><br><span class="line">    o = o <span class="keyword">or</span> &#123;&#125;   <span class="comment">-- create object if user does not provide one</span></span><br><span class="line">    <span class="built_in">setmetatable</span>(o, self)</span><br><span class="line">    self.<span class="built_in">__index</span> = self</span><br><span class="line">    <span class="keyword">return</span> o</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Base:Test1</span><span class="params">()</span></span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Base Test1"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Base:Test2</span><span class="params">()</span></span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Base Test2"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--Child既可以说是Base类的实例，也可以说是Base类的子类，因为它们本质上都是table对象</span></span><br><span class="line">Child = Base:new()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Child:Test1</span><span class="params">()</span></span> <span class="comment">--Child类重写了Test1方法</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Child Test1"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> a = Base:new()    <span class="comment">--生成一个Base类的实例</span></span><br><span class="line">a:Test1()               <span class="comment">--将打印"Base Test1"</span></span><br><span class="line">a:Test2()               <span class="comment">--将打印"Base Test2"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> b = Child:new()   <span class="comment">--生成一个Child类的实例</span></span><br><span class="line">b:Test1()               <span class="comment">--将打印"Child Test1"</span></span><br><span class="line">b:Test2()               <span class="comment">--将打印"Base Test2",调用的是父类的方法</span></span><br></pre></td></tr></table></figure>
 
-<p>可以看到，这里的类和实例都是table，并没有本质上的区别。这并不影响我们的初衷——代码复用，甚至提供了其他面向对象语言所没有的灵活性，比如你可以直接给实例定义新的方法。</p>
+<h2 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h2><p>我在工作中接触到的算是方案一的升级版。</p>
+<p>核心代码如下：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">Base = &#123;__ClassType = <span class="string">"Base"</span>&#125;</span><br><span class="line">ALL_CLASS = ALL_CLASS <span class="keyword">or</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Base:New</span><span class="params">(...)</span></span></span><br><span class="line">    <span class="keyword">local</span> o = &#123;&#125;</span><br><span class="line">    <span class="built_in">setmetatable</span>(o, &#123;<span class="built_in">__index</span> = self&#125;)</span><br><span class="line">    <span class="keyword">if</span> o.Ctor <span class="keyword">then</span> o:Ctor(...) <span class="keyword">end</span> <span class="comment">-- 调用构造函数</span></span><br><span class="line">    <span class="keyword">return</span> o</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Base:Inherit</span><span class="params">(ClassName, o)</span></span></span><br><span class="line">    o = o <span class="keyword">or</span> &#123;&#125;</span><br><span class="line">    o.mt = &#123; <span class="built_in">__index</span> = o&#125;</span><br><span class="line">    <span class="built_in">assert</span>(ClassName, <span class="string">"必须要有类名"</span>)</span><br><span class="line">    <span class="built_in">assert</span>(<span class="keyword">not</span> (ClassName <span class="keyword">and</span> ALL_CLASS[ClassName]), <span class="built_in">string</span>.<span class="built_in">format</span>(<span class="string">"该类已存在： %s"</span>, ClassName))</span><br><span class="line"></span><br><span class="line">    o.__ClassType = ClassName</span><br><span class="line">    ALL_CLASS[ClassName] = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">    o.__InheritMap = &#123;[self:GetType()] = <span class="literal">true</span> &#125;  <span class="comment">-- 记录继承类型</span></span><br><span class="line">    o.__InheritSelf = <span class="literal">false</span></span><br><span class="line">    <span class="keyword">if</span> self.__InheritMap <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">for</span> UpType, _ <span class="keyword">in</span> <span class="built_in">pairs</span>(self.__InheritMap) <span class="keyword">do</span></span><br><span class="line">            o.__InheritMap[UpType] = <span class="literal">true</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">setmetatable</span>(o, &#123;<span class="built_in">__index</span> = self&#125;)</span><br><span class="line">    <span class="keyword">return</span> o</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Base:IsSubObj</span><span class="params">(ObjType)</span></span></span><br><span class="line">    <span class="keyword">return</span> self:GetTypeMap()[ObjType]</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Base:GetTypeMap</span><span class="params">()</span></span></span><br><span class="line">    <span class="keyword">local</span> clsSelf = <span class="built_in">getmetatable</span>(self)</span><br><span class="line">    <span class="keyword">if</span> clsSelf <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">local</span> Temp = clsSelf.<span class="built_in">__index</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> Temp.__InheritSelf <span class="keyword">then</span></span><br><span class="line">            Temp.__InheritMap[Temp:GetType()] = <span class="literal">true</span></span><br><span class="line">            Temp.__InheritSelf = <span class="literal">true</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">return</span> Temp.__InheritMap</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">return</span> &#123;&#125;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Base:Ctor</span><span class="params">()</span></span> <span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Base:InClass</span><span class="params">()</span></span> <span class="keyword">return</span> <span class="literal">true</span> <span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Base:OnCreate</span><span class="params">()</span></span> <span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Base:OnDestroy</span><span class="params">()</span></span> <span class="keyword">end</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Base:GetType</span><span class="params">()</span></span>	<span class="keyword">return</span> self.__ClassType <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>与之配套的方法：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 获取一个类的父类 &amp; 获取一个实例的构造类</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Super</span><span class="params">(Class)</span></span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">getmetatable</span>(Class).<span class="built_in">__index</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 判断一个类是否是类的子类 &amp; 判断一个对象否是另一个类的实例</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">IsSub</span><span class="params">(Obj, Base)</span></span></span><br><span class="line">    <span class="keyword">local</span> Temp = Obj</span><br><span class="line">    <span class="keyword">while</span>  <span class="number">1</span> <span class="keyword">do</span>     <span class="comment">--循环回溯metatable</span></span><br><span class="line">        <span class="keyword">local</span> mt = <span class="built_in">getmetatable</span>(Temp)</span><br><span class="line">        <span class="keyword">if</span> mt <span class="keyword">then</span></span><br><span class="line">            Temp = mt.<span class="built_in">__index</span></span><br><span class="line">            <span class="keyword">if</span> Temp == Base <span class="keyword">then</span></span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">            <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
 
         </div>
 
@@ -201,7 +213,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-10-11T02:35:33.097Z" itemprop="dateUpdated">2019-10-11 10:35:33</time>
+    最后更新时间：<time datetime="2019-10-11T04:46:51.788Z" itemprop="dateUpdated">2019-10-11 12:46:51</time>
 </span><br>
 
 
@@ -237,7 +249,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://shaoxingu.github.io/2019/10/11/LuaOOP/&title=《lua的面向对象》 — Philip's Blog&pic=https://shaoxingu.github.io/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://shaoxingu.github.io/2019/10/11/LuaOOP/&title=《Lua实现面向对象》 — Philip's Blog&pic=https://shaoxingu.github.io/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -247,7 +259,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://shaoxingu.github.io/2019/10/11/LuaOOP/&title=《lua的面向对象》 — Philip's Blog&source=一个菜鸡程序猿的学习记录" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://shaoxingu.github.io/2019/10/11/LuaOOP/&title=《Lua实现面向对象》 — Philip's Blog&source=一个菜鸡程序猿的学习记录" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -257,7 +269,7 @@
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《lua的面向对象》 — Philip's Blog&url=https://shaoxingu.github.io/2019/10/11/LuaOOP/&via=https://shaoxingu.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Lua实现面向对象》 — Philip's Blog&url=https://shaoxingu.github.io/2019/10/11/LuaOOP/&via=https://shaoxingu.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
@@ -389,7 +401,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://shaoxingu.github.io/2019/10/11/LuaOOP/&title=《lua的面向对象》 — Philip's Blog&pic=https://shaoxingu.github.io/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://shaoxingu.github.io/2019/10/11/LuaOOP/&title=《Lua实现面向对象》 — Philip's Blog&pic=https://shaoxingu.github.io/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -399,7 +411,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://shaoxingu.github.io/2019/10/11/LuaOOP/&title=《lua的面向对象》 — Philip's Blog&source=一个菜鸡程序猿的学习记录" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://shaoxingu.github.io/2019/10/11/LuaOOP/&title=《Lua实现面向对象》 — Philip's Blog&source=一个菜鸡程序猿的学习记录" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -409,7 +421,7 @@
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《lua的面向对象》 — Philip's Blog&url=https://shaoxingu.github.io/2019/10/11/LuaOOP/&via=https://shaoxingu.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Lua实现面向对象》 — Philip's Blog&url=https://shaoxingu.github.io/2019/10/11/LuaOOP/&via=https://shaoxingu.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
