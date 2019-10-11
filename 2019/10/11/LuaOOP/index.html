@@ -29,7 +29,7 @@
 <meta property="og:site_name" content="Philip&#39;s Blog">
 <meta property="og:description" content="概述以下描述出自《Program in Lua》中文版：  ​        一些面向对象的语言中提供了类的概念，作为创建对象的模板。在这些语言里，对象是类的实例。Lua 不存在类的概念，每个对象定义他自己的行为并拥有自己的形状（shape）。然而，依据基于原型（prototype）的语言比如 Self 和 NewtonScript，在 Lua中仿效类的概念并不难。在这些语言中，对象没有类。相反，">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-11T04:50:06.136Z">
+<meta property="og:updated_time" content="2019-10-11T04:53:17.463Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Lua实现面向对象">
 <meta name="twitter:description" content="概述以下描述出自《Program in Lua》中文版：  ​        一些面向对象的语言中提供了类的概念，作为创建对象的模板。在这些语言里，对象是类的实例。Lua 不存在类的概念，每个对象定义他自己的行为并拥有自己的形状（shape）。然而，依据基于原型（prototype）的语言比如 Self 和 NewtonScript，在 Lua中仿效类的概念并不难。在这些语言中，对象没有类。相反，">
@@ -138,7 +138,7 @@
         <h1 class="title">Lua实现面向对象</h1>
         <h5 class="subtitle">
             
-                <time datetime="2019-10-11T04:50:06.136Z" itemprop="datePublished" class="page-time">
+                <time datetime="2019-10-11T04:53:17.463Z" itemprop="datePublished" class="page-time">
   2019-10-11
 </time>
 
@@ -160,7 +160,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#概述"><span class="post-toc-number">1.</span> <span class="post-toc-text">概述</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方案一"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">方案一</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方案二"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">方案二</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#概述"><span class="post-toc-number">1.</span> <span class="post-toc-text">概述</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实现方案"><span class="post-toc-number">2.</span> <span class="post-toc-text">实现方案</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方案一"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">方案一</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方案二"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">方案二</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -171,7 +171,7 @@
     <div class="post-card">
         <h1 class="post-card-title">Lua实现面向对象</h1>
         <div class="post-meta">
-            <time class="post-time" title="2019-10-11 12:50:06" datetime="2019-10-11T04:50:06.136Z"  itemprop="datePublished">2019-10-11</time>
+            <time class="post-time" title="2019-10-11 12:53:17" datetime="2019-10-11T04:53:17.463Z"  itemprop="datePublished">2019-10-11</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
@@ -190,7 +190,7 @@
 <blockquote>
 <p>​        一些面向对象的语言中提供了类的概念，作为创建对象的模板。在这些语言里，对象是类的实例。Lua 不存在类的概念，每个对象定义他自己的行为并拥有自己的形状（shape）。然而，依据基于原型（prototype）的语言比如 Self 和 NewtonScript，在 Lua中仿效类的概念并不难。在这些语言中，对象没有类。相反，每个对象都有一个 prototype（原型），当调用不属于对象的某些操作时，会最先会到 prototype 中查找这些操作。在这类语言中实现类（class）的机制，我们创建一个对象，作为其它对象的原型即可（原型对象为类，其它对象为类的 instance）。类与 prototype 的工作机制相同，都是定义了特定对象的行为。</p>
 </blockquote>
-<h2 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h2><p>Lua的作者之一<a href="https://en.wikipedia.org/wiki/Roberto_Ierusalimschy" target="_blank" rel="noopener">Roberto Lerusalimschy</a>在《Program in Lua》书中推荐了<a href="http://www.lua.org/pil/16.html" target="_blank" rel="noopener">一种实现LuaOO的方案</a>，这种方案很简单也很容易理解。</p>
+<h1 id="实现方案"><a href="#实现方案" class="headerlink" title="实现方案"></a>实现方案</h1><h2 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h2><p>Lua的作者之一<a href="https://en.wikipedia.org/wiki/Roberto_Ierusalimschy" target="_blank" rel="noopener">Roberto Lerusalimschy</a>在《Program in Lua》书中推荐了<a href="http://www.lua.org/pil/16.html" target="_blank" rel="noopener">一种实现LuaOO的方案</a>，这种方案很简单也很容易理解。</p>
 <p>在Lua里，类和实例都是table。在继承或实例化的时候，类会被赋值给实例或子类metatable的__index。</p>
 <p>核心代码其实就这几行：</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Class = &#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Class:new</span> <span class="params">(o)</span></span></span><br><span class="line">    o = o <span class="keyword">or</span> &#123;&#125;   <span class="comment">-- create object if user does not provide one</span></span><br><span class="line">    <span class="built_in">setmetatable</span>(o, self)</span><br><span class="line">    self.<span class="built_in">__index</span> = self</span><br><span class="line">    <span class="keyword">return</span> o</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
@@ -213,7 +213,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-10-11T04:50:06.136Z" itemprop="dateUpdated">2019-10-11 12:50:06</time>
+    最后更新时间：<time datetime="2019-10-11T04:53:17.463Z" itemprop="dateUpdated">2019-10-11 12:53:17</time>
 </span><br>
 
 
