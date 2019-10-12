@@ -29,7 +29,7 @@
 <meta property="og:site_name" content="Philip&#39;s Blog">
 <meta property="og:description" content="概述以下描述出自《Program in Lua》中文版：  ​        一些面向对象的语言中提供了类的概念，作为创建对象的模板。在这些语言里，对象是类的实例。Lua 不存在类的概念，每个对象定义他自己的行为并拥有自己的形状（shape）。然而，依据基于原型（prototype）的语言比如 Self 和 NewtonScript，在 Lua中仿效类的概念并不难。在这些语言中，对象没有类。相反，">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-12T08:58:11.390Z">
+<meta property="og:updated_time" content="2019-10-12T09:09:11.792Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Lua实现面向对象">
 <meta name="twitter:description" content="概述以下描述出自《Program in Lua》中文版：  ​        一些面向对象的语言中提供了类的概念，作为创建对象的模板。在这些语言里，对象是类的实例。Lua 不存在类的概念，每个对象定义他自己的行为并拥有自己的形状（shape）。然而，依据基于原型（prototype）的语言比如 Self 和 NewtonScript，在 Lua中仿效类的概念并不难。在这些语言中，对象没有类。相反，">
@@ -145,7 +145,7 @@
         <h1 class="title">Lua实现面向对象</h1>
         <h5 class="subtitle">
             
-                <time datetime="2019-10-12T08:58:11.390Z" itemprop="datePublished" class="page-time">
+                <time datetime="2019-10-12T09:09:11.792Z" itemprop="datePublished" class="page-time">
   2019-10-12
 </time>
 
@@ -178,7 +178,7 @@
     <div class="post-card">
         <h1 class="post-card-title">Lua实现面向对象</h1>
         <div class="post-meta">
-            <time class="post-time" title="2019-10-12 16:58:11" datetime="2019-10-12T08:58:11.390Z"  itemprop="datePublished">2019-10-12</time>
+            <time class="post-time" title="2019-10-12 17:09:11" datetime="2019-10-12T09:09:11.792Z"  itemprop="datePublished">2019-10-12</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
@@ -232,7 +232,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-10-12T08:58:11.390Z" itemprop="dateUpdated">2019-10-12 16:58:11</time>
+    最后更新时间：<time datetime="2019-10-12T09:09:11.792Z" itemprop="dateUpdated">2019-10-12 17:09:11</time>
 </span><br>
 
 
@@ -333,38 +333,31 @@
 
 
 
-
-
-
-
-
-
-
-
-
 <section class="comments" id="comments">
-    <div id="gitalk-container"></div>
-    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
     <script>
-        var id = location.pathname
-        if (location.pathname.length > 50) {
-          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
-        }
-        const gitalk = new Gitalk({
-          clientID: '18b35c7f5f43c8de5f15',
-          clientSecret: '4912f50da5c438446cf0a7e19ba4aca34d68f1d5',
-          repo: 'shaoxingu.github.io',
-          owner: 'ShaoxinGu',
-          admin: ['ShaoxinGu'],
-          id: id,      // Ensure uniqueness and length less than 50
-          title: document.title.split('|')[0],
-          distractionFreeMode: false  // Facebook-like distraction free mode
+        var gitment = new Gitment({
+            owner: 'ShaoxinGu',
+            repo: 'shaoxingu.github.io',
+            oauth: {
+                client_id: '18b35c7f5f43c8de5f15',
+                client_secret: '4912f50da5c438446cf0a7e19ba4aca34d68f1d5',
+            },
         })
-
-        gitalk.render('gitalk-container')
+        gitment.render('comments')
     </script>
 </section>
+
+
+
+
+
+
+
+
+
 
 
 
