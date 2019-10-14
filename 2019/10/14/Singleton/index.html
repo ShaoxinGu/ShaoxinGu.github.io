@@ -14,25 +14,25 @@
     
     
     
-    <title>关于 | Philip&#39;s Blog | 不会美术的策划不是好程序。</title>
+    <title>单例模式 | Philip&#39;s Blog | 不会美术的策划不是好程序。</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="Game,unity3D">
-    <meta name="description" content="关于博客 这个博客是我的个人学习记录。 包括一些游戏开发相关的知识，和学习一些编程语言的笔记。 有时也会在这里记录下我的日常，写写我对人生的思考等等。 博客的搭建是基于Hexo的。 之前也试过用Jekyll，但是总觉得不够强大。 该项目托管在我的Github，由AppVeyor持续集成。 如果你也想搭一个这样的博客，可以上网搜相关的教程照着做。 有疑问的话也可以留言或邮件联系我。  关于我 我叫谷">
-<meta name="keywords" content="Game,unity3D">
-<meta property="og:type" content="website">
-<meta property="og:title" content="关于">
-<meta property="og:url" content="https://shaoxingu.github.io/about/index.html">
+    <meta name="keywords" content="设计模式">
+    <meta name="description" content="单例模式  保证一个类只有一个实例，并且提供了访问该实例的全局访问点。">
+<meta name="keywords" content="设计模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单例模式">
+<meta property="og:url" content="https://shaoxingu.github.io/2019/10/14/Singleton/index.html">
 <meta property="og:site_name" content="Philip&#39;s Blog">
-<meta property="og:description" content="关于博客 这个博客是我的个人学习记录。 包括一些游戏开发相关的知识，和学习一些编程语言的笔记。 有时也会在这里记录下我的日常，写写我对人生的思考等等。 博客的搭建是基于Hexo的。 之前也试过用Jekyll，但是总觉得不够强大。 该项目托管在我的Github，由AppVeyor持续集成。 如果你也想搭一个这样的博客，可以上网搜相关的教程照着做。 有疑问的话也可以留言或邮件联系我。  关于我 我叫谷">
+<meta property="og:description" content="单例模式  保证一个类只有一个实例，并且提供了访问该实例的全局访问点。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-10-14T06:15:08.028Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于">
-<meta name="twitter:description" content="关于博客 这个博客是我的个人学习记录。 包括一些游戏开发相关的知识，和学习一些编程语言的笔记。 有时也会在这里记录下我的日常，写写我对人生的思考等等。 博客的搭建是基于Hexo的。 之前也试过用Jekyll，但是总觉得不够强大。 该项目托管在我的Github，由AppVeyor持续集成。 如果你也想搭一个这样的博客，可以上网搜相关的教程照着做。 有疑问的话也可以留言或邮件联系我。  关于我 我叫谷">
+<meta name="twitter:title" content="单例模式">
+<meta name="twitter:description" content="单例模式  保证一个类只有一个实例，并且提供了访问该实例的全局访问点。">
     
         <link rel="alternate" type="application/atom+xml" title="Philip&#39;s Blog" href="/atom.xml">
     
@@ -48,7 +48,7 @@
 <body>
     <div id="loading" class="active"></div>
 
-    <aside id="menu"  >
+    <aside id="menu" class="hide" >
   <div class="inner flex-row-vertical">
     <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
         <i class="icon icon-lg icon-close"></i>
@@ -102,7 +102,7 @@
               </a>
             </li>
         
-            <li class="waves-block waves-effect active">
+            <li class="waves-block waves-effect">
               <a href="/about"  >
                 <i class="icon icon-lg icon-child"></i>
                 关于
@@ -120,7 +120,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">关于</div>
+        <div class="flex-col header-title ellipsis">单例模式</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -139,11 +139,19 @@
         
     </div>
 </header>
-<header class="content-header page-header">
+<header class="content-header post-header">
 
     <div class="container fade-scale">
-        <h1 class="title">关于</h1>
+        <h1 class="title">单例模式</h1>
         <h5 class="subtitle">
+            
+                <time datetime="2019-10-14T06:15:08.028Z" itemprop="datePublished" class="page-time">
+  2019-10-14
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
             
         </h5>
     </div>
@@ -155,36 +163,71 @@
 
 
 <div class="container body-wrap">
-    <article class="page-article fade" itemprop="blogPage">
-        <div class="post-content page-content" id="page-content" itemprop="pageContent">
-            <h2 id="关于博客"><a href="#关于博客" class="headerlink" title="关于博客"></a>关于博客</h2><blockquote>
-<p>这个博客是我的个人学习记录。</p>
-<p>包括一些游戏开发相关的知识，和学习一些编程语言的笔记。</p>
-<p>有时也会在这里记录下我的日常，写写我对人生的思考等等。</p>
-<p>博客的搭建是基于Hexo的。</p>
-<p>之前也试过用Jekyll，但是总觉得不够强大。</p>
-<p>该项目托管在我的Github，由AppVeyor持续集成。</p>
-<p>如果你也想搭一个这样的博客，可以上网搜相关的教程照着做。</p>
-<p>有疑问的话也可以留言或邮件联系我。</p>
-</blockquote>
-<h2 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>关于我</h2><blockquote>
-<p>我叫谷韶鑫，2018年毕业于广东外语外贸大学。</p>
-<p>喜欢玩游戏、看电影和写代码。</p>
-<p>如今我是一名游戏开发程序员。</p>
-<p>客户端和服务端都懂一点，但是都不太行。</p>
-<p>不论如何，一起变强吧！</p>
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#单例模式"><span class="post-toc-number">1.</span> <span class="post-toc-text">单例模式</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Singleton"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">单例模式</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-10-14 14:15:08" datetime="2019-10-14T06:15:08.028Z"  itemprop="datePublished">2019-10-14</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h1><blockquote>
+<p> <strong>保证一个类只有一个实例，并且提供了访问该实例的全局访问点。</strong> </p>
 </blockquote>
 
         </div>
 
+        <blockquote class="post-copyright">
+    
+    <div class="content">
         
-        <div class="card page-about-me flex-row">
-            <a href="/" class="avatar waves-effect waves-circle waves-light"><img src="/img/avatar.jpg"></a>
-            <div class="content flex-col">
-                <p><strong>Philip</strong></p>
-                <p><em>不会美术的策划不是好程序。</em></p>
-                <p>What doesn't kill you makes you stronger!</p>
-            </div>
+<span class="post-time">
+    最后更新时间：<time datetime="2019-10-14T06:15:08.028Z" itemprop="dateUpdated">2019-10-14 14:15:08</time>
+</span><br>
+
+
+        
+        如果对本文有疑问，欢迎留言与我交流。
+        
+    </div>
+    
+    <footer>
+        <a href="https://shaoxingu.github.io">
+            <img src="/img/avatar.jpg" alt="Philip">
+            Philip
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+
 
             
 <div class="page-share-wrap">
@@ -193,7 +236,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://shaoxingu.github.io/about/&title=《关于》 — Philip's Blog&pic=https://shaoxingu.github.io/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://shaoxingu.github.io/2019/10/14/Singleton/&title=《单例模式》 — Philip's Blog&pic=https://shaoxingu.github.io/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -203,22 +246,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://shaoxingu.github.io/about/&title=《关于》 — Philip's Blog&source=一个菜鸡程序猿的学习记录" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://shaoxingu.github.io/2019/10/14/Singleton/&title=《单例模式》 — Philip's Blog&source=一个菜鸡程序猿的学习记录" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://shaoxingu.github.io/about/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://shaoxingu.github.io/2019/10/14/Singleton/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《关于》 — Philip's Blog&url=https://shaoxingu.github.io/about/&via=https://shaoxingu.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《单例模式》 — Philip's Blog&url=https://shaoxingu.github.io/2019/10/14/Singleton/&via=https://shaoxingu.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://shaoxingu.github.io/about/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://shaoxingu.github.io/2019/10/14/Singleton/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -235,12 +278,25 @@
 
 
         </div>
-        
+    </div>
 
-        
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/10/14/ShaderNote1/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">UnityShader笔记【一】</h4>
+      </a>
+    </div>
+  
+
+  
+</nav>
 
 
-        
+
+    
 
 
 
@@ -285,8 +341,9 @@
 
 
 
-    </article>
-    
+</article>
+
+
 
 </div>
 
@@ -329,7 +386,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://shaoxingu.github.io/about/&title=《关于》 — Philip's Blog&pic=https://shaoxingu.github.io/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://shaoxingu.github.io/2019/10/14/Singleton/&title=《单例模式》 — Philip's Blog&pic=https://shaoxingu.github.io/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -339,22 +396,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://shaoxingu.github.io/about/&title=《关于》 — Philip's Blog&source=一个菜鸡程序猿的学习记录" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://shaoxingu.github.io/2019/10/14/Singleton/&title=《单例模式》 — Philip's Blog&source=一个菜鸡程序猿的学习记录" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://shaoxingu.github.io/about/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://shaoxingu.github.io/2019/10/14/Singleton/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《关于》 — Philip's Blog&url=https://shaoxingu.github.io/about/&via=https://shaoxingu.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《单例模式》 — Philip's Blog&url=https://shaoxingu.github.io/2019/10/14/Singleton/&via=https://shaoxingu.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://shaoxingu.github.io/about/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://shaoxingu.github.io/2019/10/14/Singleton/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -365,7 +422,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://shaoxingu.github.io/about/" alt="微信分享二维码">
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://shaoxingu.github.io/2019/10/14/Singleton/" alt="微信分享二维码">
 </div>
 
 
