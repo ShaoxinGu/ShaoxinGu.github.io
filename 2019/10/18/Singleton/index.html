@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>单例模式 | Philip&#39;s Blog | 不会美术的策划不是好程序。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="设计模式">
+    <meta name="description" content="单例模式  保证一个类只有一个实例，并且提供了访问该实例的全局访问点。  单例模式或许是游戏开发中最常用的设计模式了。在开发游戏时，开发者通常会为每个子系统定义单例类。这些单例类负责统一管理某个系统，通常被称为管理器（manager）。例如常见的UI管理器（UIManager）、场景管理器（SceneManager）等。 描述 保证一个类只有一个实例：有时候，如果类存在多个实例就不能正确的运行。这">
+<meta name="keywords" content="设计模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单例模式">
+<meta property="og:url" content="https://shaoxingu.github.io/2019/10/18/Singleton/index.html">
+<meta property="og:site_name" content="Philip&#39;s Blog">
+<meta property="og:description" content="单例模式  保证一个类只有一个实例，并且提供了访问该实例的全局访问点。  单例模式或许是游戏开发中最常用的设计模式了。在开发游戏时，开发者通常会为每个子系统定义单例类。这些单例类负责统一管理某个系统，通常被称为管理器（manager）。例如常见的UI管理器（UIManager）、场景管理器（SceneManager）等。 描述 保证一个类只有一个实例：有时候，如果类存在多个实例就不能正确的运行。这">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-18T07:49:40.117Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="单例模式">
+<meta name="twitter:description" content="单例模式  保证一个类只有一个实例，并且提供了访问该实例的全局访问点。  单例模式或许是游戏开发中最常用的设计模式了。在开发游戏时，开发者通常会为每个子系统定义单例类。这些单例类负责统一管理某个系统，通常被称为管理器（manager）。例如常见的UI管理器（UIManager）、场景管理器（SceneManager）等。 描述 保证一个类只有一个实例：有时候，如果类存在多个实例就不能正确的运行。这">
+    
+        <link rel="alternate" type="application/atom+xml" title="Philip&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Philip</h5>
+          <a href="mailto:853674765@qq.com" title="853674765@qq.com" class="mail">853674765@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/shaoxingu" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">单例模式</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">单例模式</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-10-18T07:49:40.117Z" itemprop="datePublished" class="page-time">
+  2019-10-18
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#单例模式"><span class="post-toc-number">1.</span> <span class="post-toc-text">单例模式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#描述"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">描述</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#实现"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">实现</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#为什么我们使用它"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">为什么我们使用它</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#为什么我们后悔使用它"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">为什么我们后悔使用它</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#那该如何是好"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">那该如何是好</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Lua中的实现"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">Lua中的实现</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Singleton"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">单例模式</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-10-18 15:49:40" datetime="2019-10-18T07:49:40.117Z"  itemprop="datePublished">2019-10-18</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/学习笔记/">学习笔记</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h1><blockquote>
+<p> 保证一个类只有一个实例，并且提供了访问该实例的全局访问点。</p>
+</blockquote>
+<p>单例模式或许是游戏开发中最常用的设计模式了。<br>在开发游戏时，开发者通常会为每个子系统定义单例类。<br>这些单例类负责统一管理某个系统，通常被称为管理器（manager）。<br>例如常见的UI管理器（UIManager）、场景管理器（SceneManager）等。</p>
+<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><ul>
+<li>保证一个类只有一个实例：有时候，如果类存在多个实例就不能正确的运行。这种类的特点是，对这些类进行调用的时候必须接触之前所有的操作。如果这些操作的发生在不同的实例，一个实例就无法知道另一个实例的操作，也就无法正常地运行了。</li>
+<li>提供了访问该实例的全局访问点： 有时候，游戏中的不同系统都会使用同一个类。 如果这些系统不能创建这个类的实例，那这个类就需要提供获取它实例的全局方法。</li>
+</ul>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>单例模式保证一个类只有一个实例，并且提供了该实例的全局访问点。</p>
+<p><a href="https://gpp.tkchu.me/singleton.html" target="_blank" rel="noopener">GPP（Game Programming Patterns）</a>中以一个文件系统封装类作为例子。</p>
+<p>经典的C++实现方案:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileSystem</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  	<span class="function"><span class="keyword">static</span> FileSystem&amp; <span class="title">instance</span><span class="params">()</span></span></span><br><span class="line"><span class="function">  	</span>&#123;</span><br><span class="line">    	<span class="comment">// 惰性初始化</span></span><br><span class="line">    	<span class="keyword">if</span> (instance_ == <span class="literal">NULL</span>) instance_ = <span class="keyword">new</span> FileSystem();</span><br><span class="line">    	<span class="keyword">return</span> *instance_;</span><br><span class="line">  	&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  	FileSystem() &#123;&#125;</span><br><span class="line"></span><br><span class="line">  	<span class="keyword">static</span> FileSystem* instance_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>静态的<code>instance_</code>成员保存了一个类的实例， 私有的构造器保证了它是<strong>唯一</strong>的。 公开的静态方法<code>instance()</code>让任何地方的代码都能访问实例。 在首次被请求时，它同样负责惰性实例化该单例。 </p>
+<p>线程安全的现代C++实现方案：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileSystem</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  	<span class="function"><span class="keyword">static</span> FileSystem&amp; <span class="title">instance</span><span class="params">()</span></span></span><br><span class="line"><span class="function">  	</span>&#123;</span><br><span class="line">    	<span class="keyword">static</span> FileSystem *instance = <span class="keyword">new</span> FileSystem();</span><br><span class="line">    	<span class="keyword">return</span> *instance;</span><br><span class="line">  	&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  	FileSystem() &#123;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="为什么我们使用它"><a href="#为什么我们使用它" class="headerlink" title="为什么我们使用它"></a>为什么我们使用它</h2><ul>
+<li><p><strong>如果没人用，就不必创建实例。</strong> 这种惰性初始化为节约内存和CPU资源带来了好处。</p>
+</li>
+<li><p><strong>它在运行时实例化。</strong> 单例通常的替代方案是使用含有静态成员变量的类，但是静态成员是自动初始化的。编译器在main()运行前初始化静态变量，而且初始化的顺序不可控，这意味着它们的相互依赖不可靠。而单例模式的惰性初始化没有这个问题。</p>
+</li>
+<li><p><strong>可继承单例。</strong>  单例可继承。这意味着单例模式可以配合多态性写出优美的代码。核心代码如下：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">class FileSystem</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">  	static FileSystem&amp; instance();</span><br><span class="line"></span><br><span class="line">  	virtual ~FileSystem() &#123;&#125;</span><br><span class="line">  	virtual <span class="built_in">char</span>* readFile(<span class="built_in">char</span>* <span class="built_in">path</span>) = <span class="number">0</span>;</span><br><span class="line">  	virtual void  writeFile(<span class="built_in">char</span>* <span class="built_in">path</span>, <span class="built_in">char</span>* contents) = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">protected:</span><br><span class="line">  	FileSystem() &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">FileSystem&amp; FileSystem::instance()</span><br><span class="line">&#123;</span><br><span class="line">	#<span class="keyword">if</span> PLATFORM == PLAYSTATION3</span><br><span class="line">    	static FileSystem *instance = new PS3FileSystem();</span><br><span class="line"> 	#elif PLATFORM == WII</span><br><span class="line">    	static FileSystem *instance = new WiiFileSystem();</span><br><span class="line">  	#endif</span><br><span class="line">	<span class="keyword">return</span> *instance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过一个简单的编译器转换，我们把文件系统包装类绑定到合适的具体类型上。 整个代码库都可以使用<code>FileSystem::instance()</code>接触到文件系统，而无需和任何平台相关的代码耦合。耦合发生在为特定平台写的<code>FileSystem</code>类实现文件中。 </p>
+</li>
+</ul>
+<h2 id="为什么我们后悔使用它"><a href="#为什么我们后悔使用它" class="headerlink" title="为什么我们后悔使用它"></a>为什么我们后悔使用它</h2><ul>
+<li><p>*<em>它是一个全局变量 *</em></p>
+<ul>
+<li>让理解更加困难：全局变量的使用让我们除了关心当前函数之外，还需要关心全局变量的状态。而由于全局变量的全局访问性，我们可能要追踪整个代码库才能找到某个静态变量在什么地方被赋予了错误的值。</li>
+<li>促进了耦合的发生：全局变量具有全局可见性，新手程序员可以会在单例中#include 包含了其他模块的头文件。新手程序员用这种方法顺利地完成了任务，却破坏了框架留下了耦合。如果不用全局实例，那他这样做的时候将会遇到阻碍，这种阻碍会提醒他不该这样做。 通过控制对实例的访问，你控制了耦合。</li>
+<li>对并行不友好： 当我们将某些东西转为全局变量时，我们创建了一块每个线程都能看到并访问的内存， 却不知道其他线程是否正在使用那块内存。 这种方式带来了死锁，竞争状态，以及其他很难解决的线程同步问题。</li>
+</ul>
+</li>
+<li><p><strong>它能在你只有一个问题的时候解决两个</strong></p>
+<p>正如之前的描述里写的，单例模式解决了两个问题。如果我们只有其中一个问题呢？ 保证实例是唯一存在的是很有用的，但是谁告诉我们要让每个人都能接触到它？ 同样，全局接触很方便，但是必须禁止存在多个实例吗？这是一个奇怪的约束，比如我们为了便利的访问把一个类改成了单例，却发现这个类无法创建不同的实例了。</p>
+</li>
+<li><p><strong>惰性初始化从你那里剥夺了控制权</strong></p>
+<ul>
+<li>如果初始化很耗时，那么如果初始化发生在游戏的高潮部分，会导致可见的掉帧和断续的游戏体验 。</li>
+<li>游戏通常需要严格管理在堆上分配的内存来避免碎片。如果系统在初始化时分配到了堆上。我们需要知道初始化在何时发生， 这样我们才可以控制内存待在堆的哪里。  </li>
+</ul>
+</li>
+</ul>
+<h2 id="那该如何是好"><a href="#那该如何是好" class="headerlink" title="那该如何是好"></a>那该如何是好</h2><ul>
+<li><p><strong>看看你是不是真正地需要类</strong></p>
+<p>有些时候我们并不需要管理器来管理某些对象，而是让这些对象管理自己。</p>
+</li>
+<li><p><strong>将类限制为单一的实例</strong></p>
+<p>我们可以通过别的方法保证一个类只有单一实例，比如用一个bool值记录，而无需提供全局的接触点。</p>
+</li>
+<li><p><strong>为了给实例提供方便的访问方法</strong></p>
+<ul>
+<li><p>传进来：在用其他更加繁杂的方法前，考虑一下这个解决方案。 </p>
+</li>
+<li><p>从基类中获得：很多游戏架构有浅层但是宽泛的继承层次，通常只有一层深。举个例子，你也许有<code>GameObject</code>基类，每个游戏中的敌人或者对象都继承它。使用这样的架构，很大一部分游戏代码会存在于这些“子”推导类中。这就意味着这些类已经有了对同样事物的相同获取方法：它们的<code>GameObject</code>基类。我们可以利用这点： </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GameObject</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">  	<span class="function">Log&amp; <span class="title">getLog</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> log_; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  	<span class="keyword">static</span> Log&amp; log_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Enemy</span> :</span> <span class="keyword">public</span> GameObject</span><br><span class="line">&#123;</span><br><span class="line">  	<span class="function"><span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span></span></span><br><span class="line"><span class="function">  	</span>&#123;</span><br><span class="line">    	getLog().write(<span class="string">"I can log!"</span>);</span><br><span class="line">  	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从已经是全局的东西中获取： 大多数代码库仍有一些全局可用对象，比如一个代表了整个游戏状态的<code>Game</code>或<code>World</code>对象。我们可以让现有的全局对象捎带需要的东西，来减少全局变量类的数目。不让<code>Log</code>，<code>FileSystem</code>和<code>AudioPlayer</code>都变成单例，而是这样做：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Game</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  	<span class="function"><span class="keyword">static</span> Game&amp; <span class="title">instance</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> instance_; &#125;</span><br><span class="line"></span><br><span class="line">  	<span class="comment">// 设置log_, et. al. ……</span></span><br><span class="line"></span><br><span class="line">  	<span class="function">Log&amp;         <span class="title">getLog</span><span class="params">()</span>         </span>&#123; <span class="keyword">return</span> *log_; &#125;</span><br><span class="line">  	<span class="function">FileSystem&amp;  <span class="title">getFileSystem</span><span class="params">()</span>  </span>&#123; <span class="keyword">return</span> *fileSystem_; &#125;</span><br><span class="line">  	<span class="function">AudioPlayer&amp; <span class="title">getAudioPlayer</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> *audioPlayer_; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  	<span class="keyword">static</span> Game instance_;</span><br><span class="line"></span><br><span class="line">  	Log         *log_;</span><br><span class="line">  	FileSystem  *fileSystem_;</span><br><span class="line">  	AudioPlayer *audioPlayer_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从服务定位器中获得： 定义一个类，存在的唯一目标就是为对象提供全局访问。 这种常见的模式被称为服务器定位模式，<a href="https://gpp.tkchu.me/service-locator.html" target="_blank" rel="noopener">有单独讲它的章节</a>。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Lua中的实现"><a href="#Lua中的实现" class="headerlink" title="Lua中的实现"></a>Lua中的实现</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Singleton = &#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Singleton:new</span><span class="params">(o)</span></span></span><br><span class="line">	o = o <span class="keyword">or</span> &#123;&#125;</span><br><span class="line">	<span class="built_in">setmetatable</span>(o,self)</span><br><span class="line">	self.<span class="built_in">__index</span> = self</span><br><span class="line">	<span class="keyword">return</span> o</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Singleton:Instance</span><span class="params">()</span></span></span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> self.instance <span class="keyword">then</span></span><br><span class="line">		self.instance = self:new()</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">return</span> self.instance</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">s1 = Singleton:Instance()</span><br><span class="line">s2 = Singleton:Instance()</span><br><span class="line"><span class="keyword">if</span> s1 == s2 <span class="keyword">then</span>  </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"两个对象是相同的实例"</span>)  </span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-10-18T07:49:40.117Z" itemprop="dateUpdated">2019-10-18 15:49:40</time>
+</span><br>
+
+
+        
+        如果对本文有疑问，欢迎留言与我交流。
+        
+    </div>
+    
+    <footer>
+        <a href="https://shaoxingu.github.io">
+            <img src="/img/avatar.jpg" alt="Philip">
+            Philip
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://shaoxingu.github.io/2019/10/18/Singleton/&title=《单例模式》 — Philip's Blog&pic=https://shaoxingu.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://shaoxingu.github.io/2019/10/18/Singleton/&title=《单例模式》 — Philip's Blog&source=一个菜鸡程序猿的学习记录" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://shaoxingu.github.io/2019/10/18/Singleton/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《单例模式》 — Philip's Blog&url=https://shaoxingu.github.io/2019/10/18/Singleton/&via=https://shaoxingu.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://shaoxingu.github.io/2019/10/18/Singleton/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/10/18/ShaderNote1/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">UnityShader笔记【一】</h4>
+      </a>
+    </div>
+  
+
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "PiC8WTWyEJAvwelFCfLlnO0N-gzGzoHsz",
+            appKey: "dk4m3sh3U91jt2tnyNaUpV3q",
+            avatar: "mm",
+            placeholder: "说点什么吧~",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span >
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span >
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Philip &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://shaoxingu.github.io/2019/10/18/Singleton/&title=《单例模式》 — Philip's Blog&pic=https://shaoxingu.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://shaoxingu.github.io/2019/10/18/Singleton/&title=《单例模式》 — Philip's Blog&source=一个菜鸡程序猿的学习记录" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://shaoxingu.github.io/2019/10/18/Singleton/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《单例模式》 — Philip's Blog&url=https://shaoxingu.github.io/2019/10/18/Singleton/&via=https://shaoxingu.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://shaoxingu.github.io/2019/10/18/Singleton/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://shaoxingu.github.io/2019/10/18/Singleton/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/assets/haruto.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body>
+</html>
