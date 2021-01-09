@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Lua源码笔记, Game,unity3D">
+    <meta name="keywords" content="C#学习笔记, Game,unity3D">
     <meta name="description" content="一个菜鸡程序猿的学习记录">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Lua源码笔记 | Philip&#39;s Blog</title>
+    <title>C#学习笔记 | Philip&#39;s Blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -311,12 +311,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Lua源码笔记</h1>
+                    <h1 class="description center-align post-title">C#学习笔记</h1>
                 </div>
             </div>
         </div>
@@ -432,8 +432,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Lua/">
-                                <span class="chip bg-color">Lua</span>
+                            <a href="/tags/C/">
+                                <span class="chip bg-color">C#</span>
                             </a>
                         
                     </div>
@@ -457,7 +457,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-01-03
+                    2021-01-09
                 </div>
                 
 
@@ -473,107 +473,164 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>用Lua开发游戏已经有一段时间了，但是对Lua的理解还一直停留在浅层。最近想深入研究下，于是着手开始看Lua源码，并在本文记录知识点。</p>
-<h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><h3 id="GC"><a href="#GC" class="headerlink" title="GC"></a>GC</h3><h4 id="1-基本数据结构"><a href="#1-基本数据结构" class="headerlink" title="1.基本数据结构"></a>1.基本数据结构</h4><p>Lua的基本数据结构是一个类型union+type。相关的核心代码如下：</p>
-<pre><code class="c++">/*
-** Common type for all collectable objects
-*/
-typedef struct GCObject GCObject;
+                <h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><h2 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h2><pre class="line-numbers language-c#" data-language="c#"><code class="language-c#">using System; &#x2F;&#x2F;引入命名空间（引用已有工具包）
 
-/*
-** Common Header for all collectable objects (in macro form, to be
-** included in other objects)
-*/
-#define CommonHeader \
-    GCObject *next;  \
-    lu_byte tt;      \
-    lu_byte marked
-
-/*
-** Common type has only the common header
-*/
-struct GCObject
+namespace Test &#x2F;&#x2F;定义函数命名空间（工具包）
 &#123;
-    CommonHeader;
-&#125;;
-
-/*
-** Tagged Values. This is the basic representation of values in Lua,
-** an actual value plus a tag with its type.
-*/
-
-/*
-** Union of all Lua values
-*/
-typedef union Value &#123;
-    GCObject *gc;    /* collectable objects */
-    void *p;         /* light userdata */
-    int b;             /* booleans */
-    lua_CFunction f; /* light C functions */
-    lua_Integer i;   /* integer numbers */
-    lua_Number n;    /* float numbers */
-&#125; Value;
-
-#define TValuefields \
-    Value value_;    \
-    int tt_
-
-typedef struct lua_TValue
-&#123;
-    TValuefields;
-&#125; TValue;</code></pre>
-<h4 id="2-GC算法和流程"><a href="#2-GC算法和流程" class="headerlink" title="2.GC算法和流程"></a>2.GC算法和流程</h4><ol>
-<li><p>双色标记清除算法</p>
-<p>在Lua5.0中的GC，是一次性不可被打断的操作，执行的算法是Mark-and-sweep算法，在执行GC操作的时候，会设置2种颜色，黑色和白色，然后执行GC的流程，大体的伪代码流程如下:</p>
-<pre><code>每个新创建的对象为白色
-
-//初始化阶段
-遍历root链表中的对象，并将其加入到对象链表中    
-
-//标记阶段   
-当前对象链表中还有未被扫描的元素:    
-    从中取出对象并将其标记为黑色   
-    遍历这个对象关联的其他所有对象: 
-        标记为黑色
-
-//回收阶段
-遍历所有对象:   
-    如果为白色:   
-        这些对象没有被引用，则执行回收
-    否则: 
-        这些对象仍然被引用，需要保留</code></pre><p>整个过程是不能被打断的，这是为了避免一种情况：<br>如果可以被打断，在GC的过程中新创建一个对象<br>那么如果标记为白色，此时处于回收阶段，那么这个对象没有被扫描就会被回收；<br>如果标记为黑色，此时处于回收阶段，那么这个对象没有被扫描就会被保留<br>两种情况都不适合，所以只有让整个过程不可被打断，带来的问题就是造成gc的时候卡顿</p>
-</li>
-<li><p>三色标记清除算法</p>
-<p>虽然是三色，本质是四色，颜色分为三种:</p>
-<p><strong>白色:</strong> 当前对象为待访问状态，表示对象还未被gc标记过，也就是对象创建的初始状态； 同理，如果在gc完成后，仍然为白色，则说明当前对象没有被引用，则可以被清除回收</p>
-<p><strong>灰色:</strong> 当前对象为待扫描状态，当前对象已经被扫描过，但是其引用的其他对象没有被扫描</p>
-<p><strong>黑色:</strong> 当前对象已经扫描过，并且其引用的其他对象也被扫描过</p>
-<p>其流程伪代码:</p>
-<pre><code>每个新创建的对象为白色
-
-//初始化阶段   
-遍历root阶段中引用的对象，从白色设置为灰色，并放入到灰色节点列表中   
-
-//标记阶段    
-当灰色链表中还有未被扫描的元素:    
-    从中去除一个对象并将其标记为黑色   
-    遍历这个对象关联的其他所有对象:   
-        如果是白色:
-            标记为灰色，并加入灰色链表中   
-
-//回收阶段  
-遍历所有对象:   
-    如果为白色: 
-        这些对象没有被引用，需要被回收
-    否则:
-        重新加入对象链表中等待下次gc   </code></pre><p>整个标记过程是可以被打断的，被打断后回来只需要接着执行标记过程即可，回收阶段是不可被打断的。</p>
-<p>如何解决在标记阶段之后创建的对象为白色的问题?<br>分裂白色为两种白色，一种为当前白色 currentwhite， 一种为非当前白色 otherwhite，新创建的对象都为otherwhite，则在执行回收的时候，如果为otherwhite则不执行回收操作，等待下次gc的时候，会执行白色的轮换，则新创建的对象会进入下一轮GC。</p>
-</li>
+	class Program &#x2F;&#x2F;定义类（工具）
+    &#123;
+        static void Main(string[] args) &#x2F;&#x2F;定义函数（工具的使用方法）
+        &#123;
+            Console.WriteLine(&quot;Hello World!&quot;);
+        &#125;
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><h3 id="整形"><a href="#整形" class="headerlink" title="整形"></a>整形</h3><table>
+<thead>
+<tr>
+<th align="center">数据类型</th>
+<th align="center">别名</th>
+<th align="center">字节数</th>
+<th align="center">位数</th>
+<th align="center">允许的值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">sbyte</td>
+<td align="center">System.Sbyte</td>
+<td align="center">1</td>
+<td align="center">8</td>
+<td align="center">-127~128</td>
+</tr>
+<tr>
+<td align="center">byte</td>
+<td align="center">System.Byte</td>
+<td align="center">1</td>
+<td align="center">8</td>
+<td align="center">0~255</td>
+</tr>
+<tr>
+<td align="center">short</td>
+<td align="center">System.Int16</td>
+<td align="center">2</td>
+<td align="center">16</td>
+<td align="center">-32768~32767</td>
+</tr>
+<tr>
+<td align="center">ushort</td>
+<td align="center">System.UInt16</td>
+<td align="center">2</td>
+<td align="center">16</td>
+<td align="center">0~65535</td>
+</tr>
+<tr>
+<td align="center">int</td>
+<td align="center">System.Int32</td>
+<td align="center">4</td>
+<td align="center">32</td>
+<td align="center">-2147483648~2147483647</td>
+</tr>
+<tr>
+<td align="center">int</td>
+<td align="center">System.UInt32</td>
+<td align="center">4</td>
+<td align="center">32</td>
+<td align="center">0~4294967295</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">System.Int64</td>
+<td align="center">8</td>
+<td align="center">64</td>
+<td align="center">-9223372036854775808~9223372036854775807</td>
+</tr>
+<tr>
+<td align="center">ulong</td>
+<td align="center">System.UInt64</td>
+<td align="center">8</td>
+<td align="center">64</td>
+<td align="center">0~18446744073709551615</td>
+</tr>
+</tbody></table>
+<h3 id="浮点型"><a href="#浮点型" class="headerlink" title="浮点型"></a>浮点型</h3><table>
+<thead>
+<tr>
+<th align="center">数据类型</th>
+<th align="center">别名</th>
+<th align="center">字节数</th>
+<th align="center">位数</th>
+<th align="center">标识</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">float</td>
+<td align="center">System.Single</td>
+<td align="center">4</td>
+<td align="center">32</td>
+<td align="center">f</td>
+</tr>
+<tr>
+<td align="center">double</td>
+<td align="center">System.Double</td>
+<td align="center">8</td>
+<td align="center">64</td>
+<td align="center">d(默认)</td>
+</tr>
+<tr>
+<td align="center">decimal</td>
+<td align="center">System.Decimal</td>
+<td align="center">16</td>
+<td align="center">128</td>
+<td align="center">m</td>
+</tr>
+</tbody></table>
+<h3 id="简单类型"><a href="#简单类型" class="headerlink" title="简单类型"></a>简单类型</h3><table>
+<thead>
+<tr>
+<th align="center">数据类型</th>
+<th align="center">别名</th>
+<th align="center">字节数</th>
+<th align="center">位数</th>
+<th align="center">允许的值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">char</td>
+<td align="center">System.Char</td>
+<td align="center"><strong>2</strong></td>
+<td align="center"><strong>16</strong></td>
+<td align="center">一个Unicode字符</td>
+</tr>
+<tr>
+<td align="center">bool</td>
+<td align="center">System.Boolean</td>
+<td align="center">1</td>
+<td align="center">8</td>
+<td align="center">布尔值：true或false</td>
+</tr>
+<tr>
+<td align="center">string</td>
+<td align="center">System.String</td>
+<td align="center">—</td>
+<td align="center">—</td>
+<td align="center">一组字符</td>
+</tr>
+</tbody></table>
+<h3 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h3><p>隐式转换：变量转换为范围更大、精度更高的类型可自动完成，称为隐式转换</p>
+<p>显示转换：变量转换为范围更小、精度更低的类型可能会出现异常、损失精度，因此需要手动转换，称为显示转换。</p>
+<h4 id="显示转换的四种方式"><a href="#显示转换的四种方式" class="headerlink" title="显示转换的四种方式"></a>显示转换的四种方式</h4><ol>
+<li>(类型)变量</li>
+<li>类型.Parse(字符串)</li>
+<li>Convert.ToInt32(变量)</li>
+<li>变量.ToString()</li>
 </ol>
 
                 
@@ -601,7 +658,7 @@ typedef struct lua_TValue
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://shaoxingu.github.io/2021/01/03/LuaSource/">https://shaoxingu.github.io/2021/01/03/LuaSource/</a>
+                    <a href="https://shaoxingu.github.io/2021/01/09/CSharpNote/">https://shaoxingu.github.io/2021/01/09/CSharpNote/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -639,8 +696,8 @@ typedef struct lua_TValue
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Lua/">
-                                    <span class="chip bg-color">Lua</span>
+                                <a href="/tags/C/">
+                                    <span class="chip bg-color">C#</span>
                                 </a>
                             
                         </div>
@@ -810,17 +867,18 @@ typedef struct lua_TValue
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2021/01/03/LuaOOP/">
+                <a href="/2021/01/09/CSharpNote/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Lua实现面向对象">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="C#学习笔记">
                         
-                        <span class="card-title">Lua实现面向对象</span>
+                        <span class="card-title">C#学习笔记</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -830,9 +888,59 @@ typedef struct lua_TValue
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-03
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-09
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    学习笔记
+                                </a>
+                            
+                            
                         </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C/">
+                        <span class="chip bg-color">C#</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/01/09/Closure/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Lua的闭包">
+                        
+                        <span class="card-title">Lua的闭包</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-09
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -850,59 +958,6 @@ typedef struct lua_TValue
                     
                     <a href="/tags/Lua/">
                         <span class="chip bg-color">Lua</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2021/01/03/ShaderNote1/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="UnityShader笔记【一】">
-                        
-                        <span class="card-title">UnityShader笔记【一】</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-03
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-category">
-                                    学习笔记
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Unity/">
-                        <span class="chip bg-color">Unity</span>
-                    </a>
-                    
-                    <a href="/tags/Shader/">
-                        <span class="chip bg-color">Shader</span>
                     </a>
                     
                 </div>

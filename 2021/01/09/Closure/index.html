@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Lua实现面向对象, Game,unity3D">
+    <meta name="keywords" content="Lua的闭包, Game,unity3D">
     <meta name="description" content="一个菜鸡程序猿的学习记录">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Lua实现面向对象 | Philip&#39;s Blog</title>
+    <title>Lua的闭包 | Philip&#39;s Blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -311,12 +311,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Lua实现面向对象</h1>
+                    <h1 class="description center-align post-title">Lua的闭包</h1>
                 </div>
             </div>
         </div>
@@ -457,7 +457,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-01-03
+                    2021-01-09
                 </div>
                 
 
@@ -473,232 +473,17 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>以下描述出自《Program in Lua》中文版：</p>
-<blockquote>
-<p>​        一些面向对象的语言中提供了类的概念，作为创建对象的模板。在这些语言里，对象是类的实例。Lua 不存在类的概念，每个对象定义他自己的行为并拥有自己的形状（shape）。然而，依据基于原型（prototype）的语言比如 Self 和 NewtonScript，在 Lua中仿效类的概念并不难。在这些语言中，对象没有类。相反，每个对象都有一个 prototype（原型），当调用不属于对象的某些操作时，会最先会到 prototype 中查找这些操作。在这类语言中实现类（class）的机制，我们创建一个对象，作为其它对象的原型即可（原型对象为类，其它对象为类的 instance）。类与 prototype 的工作机制相同，都是定义了特定对象的行为。</p>
+                <h1 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h1><blockquote>
+<p> 闭包是一个函数以及它的 upvalues。</p>
 </blockquote>
-<h1 id="实现方案"><a href="#实现方案" class="headerlink" title="实现方案"></a>实现方案</h1><h2 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h2><p>Lua的作者之一<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Roberto_Ierusalimschy">Roberto Lerusalimschy</a>在《Program in Lua》书中推荐了<a target="_blank" rel="noopener" href="http://www.lua.org/pil/16.html">一种实现LuaOO的方案</a>，这种方案很简单也很容易理解。</p>
-<p>在Lua里，类和实例都是table。在继承或实例化的时候，类会被赋值给实例或子类metatable的__index。</p>
-<p>核心代码其实就这几行：</p>
-<pre><code class="lua">Class = &#123;&#125;
-function Class:new (o)
-    o = o or &#123;&#125;   -- create object if user does not provide one
-    setmetatable(o, self)
-    self.__index = self
-    return o
-end</code></pre>
-<p>具体的案例如下：</p>
-<pre><code class="lua">Base = &#123;&#125;
-function Base:new (o)
-    o = o or &#123;&#125;   -- create object if user does not provide one
-    setmetatable(o, self)
-    self.__index = self
-    return o
-end
-
-function Base:Test1()
-    print(&quot;Base Test1&quot;)
-end
-
-function Base:Test2()
-    print(&quot;Base Test2&quot;)
-end
-
---Child既可以说是Base类的实例，也可以说是Base类的子类，因为它们本质上都是table对象
-Child = Base:new()
-
-function Child:Test1() --Child类重写了Test1方法
-    print(&quot;Child Test1&quot;)
-end
-
-local a = Base:new()    --生成一个Base类的实例
-a:Test1()               --将打印&quot;Base Test1&quot;
-a:Test2()               --将打印&quot;Base Test2&quot;
-
-local b = Child:new()   --生成一个Child类的实例
-b:Test1()               --将打印&quot;Child Test1&quot;
-b:Test2()               --将打印&quot;Base Test2&quot;,调用的是父类的方法</code></pre>
-<h2 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h2><p>这个方案是我在工作中接触到的，算是方案一的升级版。</p>
-<p>核心代码如下：</p>
-<pre><code class="lua">-- 所有类都会继承自这个类，真·基类
-Class = &#123;__ClassType = &quot;Class&quot;&#125;    
-ALL_CLASS = ALL_CLASS or &#123;&#125;
-
-function Class:Inherit(ClassName, o)
-    o = o or &#123;&#125;
-    o.mt = &#123; __index = o&#125;
-    assert(ClassName, &quot;必须要有类名&quot;)
-    assert(not (ClassName and ALL_CLASS[ClassName]), string.format(&quot;该类已存在： %s&quot;, ClassName))
-
-    o.__ClassType = ClassName
-    ALL_CLASS[ClassName] = true
-
-    o.__InheritMap = &#123;[self:GetType()] = true &#125;  -- 记录继承类型
-    o.__InheritSelf = false
-    if self.__InheritMap then
-        for UpType, _ in pairs(self.__InheritMap) do
-            o.__InheritMap[UpType] = true
-        end
-    end
-
-    setmetatable(o, &#123;__index = self&#125;)
-    return o
-end
-
-function Class:IsSubObj(ObjType)
-    return self:GetTypeMap()[ObjType]
-end
-
-function Class:GetTypeMap()
-    local clsSelf = getmetatable(self)
-    if clsSelf then
-        local Temp = clsSelf.__index
-        if not Temp.__InheritSelf then
-            Temp.__InheritMap[Temp:GetType()] = true
-            Temp.__InheritSelf = true
-        end
-        return Temp.__InheritMap
-    end
-    return &#123;&#125;
-end
-
-function Class:New(...)
-    local o = &#123;&#125;
-    setmetatable(o, &#123;__index = self&#125;)
-    if o.Ctor then o:Ctor(...) end --调用构造函数
-    return o
-end
-
-function Class:Ctor() end
-function Class:InClass() return true end
-function Class:OnCreate() end
-function Class:OnDestroy() end
-function Class:GetType()    return self.__ClassType end
-
---获取一个class的父类
-function Super(Class)
-    return getmetatable(Class).__index
-end
-
---判断一个类是否是类的子类 &amp; 判断一个对象否是另一个类的实例
-function IsSub(Obj, Base)
-    local Temp = Obj
-    while  1 do     --循环回溯metatable
-        local mt = getmetatable(Temp)
-        if mt then
-            Temp = mt.__index
-            if Temp == Base then
-                return true
-            end
-        else
-            return false
-        end
-    end
-end</code></pre>
-<p>示例如下：</p>
-<pre><code class="lua">Base = Base or Class:Inherit(&quot;Base&quot;)
-
-function Base:Test1()
-    print(&quot;Base Test1&quot;)
-end
-
-function Base:Test2()
-    print(&quot;Base Test2&quot;)
-end
-
-Child = Child or Base:Inherit(&quot;Child&quot;)
-
-function Child:Test1()  --Child类重写了Test1方法
-    print(&quot;Child Test1&quot;)
-end
-
-local a = Base:new()    --生成一个Base类的实例
-a:Test1()               --将打印&quot;Base Test1&quot;
-a:Test2()               --将打印&quot;Base Test2&quot;
-
-local b = Child:new()   --生成一个Child类的实例
-b:Test1()               --将打印&quot;Child Test1&quot;
-b:Test2()               --将打印&quot;Base Test2&quot;,调用的是父类的方法</code></pre>
-<h2 id="方案三"><a href="#方案三" class="headerlink" title="方案三"></a>方案三</h2><p>这个是云风提供的方案：<a target="_blank" rel="noopener" href="https://blog.codingnow.com/cloud/LuaOO">博客地址</a>。</p>
-<pre><code class="lua">local _class=&#123;&#125;
-
-function class(super)
-    local class_type=&#123;&#125;
-    class_type.ctor=false
-    class_type.super=super
-    class_type.new=function(...) 
-            local obj=&#123;&#125;
-            do
-                local create
-                create = function(c,...)
-                    if c.super then
-                        create(c.super,...)
-                    end
-                    if c.ctor then
-                        c.ctor(obj,...)
-                    end
-                end
-
-                create(class_type,...)
-            end
-            setmetatable(obj,&#123; __index=_class[class_type] &#125;)
-            return obj
-        end
-    local vtbl=&#123;&#125;
-    _class[class_type]=vtbl
-
-    setmetatable(class_type,&#123;__newindex=
-        function(t,k,v)
-            vtbl[k]=v
-        end
-    &#125;)
-
-    if super then
-        setmetatable(vtbl,&#123;__index=
-            function(t,k)
-                local ret=_class[super][k]
-                vtbl[k]=ret
-                return ret
-            end
-        &#125;)
-    end
-
-    return class_type
-end</code></pre>
-<p>创建基类：</p>
-<pre><code class="lua">base_type=class()            -- 定义一个基类 base_type
-
-function base_type:ctor(x)    -- 定义 base_type 的构造函数
-    print(&quot;base_type ctor&quot;)
-    self.x=x
-end
-
-function base_type:print_x()-- 定义一个成员函数 base_type:print_x
-    print(self.x)
-end
-
-function base_type:hello()    -- 定义另一个成员函数 base_type:hello
-    print(&quot;hello base_type&quot;)
-end</code></pre>
-<p>创建子类：</p>
-<pre><code class="lua">test=class(base_type)    -- 定义一个类 test 继承于 base_type
-
-function test:ctor()    -- 定义 test 的构造函数
-    print(&quot;test ctor&quot;)
-end
-
-function test:hello()    -- 重载 base_type:hello 为 test:hello
-    print(&quot;hello test&quot;)
-end</code></pre>
-<p>测试：</p>
-<pre><code class="lua">a=test.new(1)    -- 输出两行，base_type ctor 和 test ctor 。这个对象被正确的构造了。
-a:print_x()        -- 输出 1 ，这个是基类 base_type 中的成员函数。
-a:hello()        -- 输出 hello test ，这个函数被重载了。</code></pre>
 
                 
             </div>
@@ -725,7 +510,7 @@ a:hello()        -- 输出 hello test ，这个函数被重载了。</code></pre
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://shaoxingu.github.io/2021/01/03/LuaOOP/">https://shaoxingu.github.io/2021/01/03/LuaOOP/</a>
+                    <a href="https://shaoxingu.github.io/2021/01/09/Closure/">https://shaoxingu.github.io/2021/01/09/Closure/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -938,13 +723,13 @@ a:hello()        -- 输出 hello test ，这个函数被重载了。</code></pre
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/01/03/Closure/">
+                <a href="/2021/01/09/CSharpNote/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Lua的闭包">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="C#学习笔记">
                         
-                        <span class="card-title">Lua的闭包</span>
+                        <span class="card-title">C#学习笔记</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -955,7 +740,7 @@ a:hello()        -- 输出 hello test ，这个函数被重载了。</code></pre
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-03
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-09
                         </span>
                         <span class="publish-author">
                             
@@ -972,8 +757,8 @@ a:hello()        -- 输出 hello test ，这个函数被重载了。</code></pre
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Lua/">
-                        <span class="chip bg-color">Lua</span>
+                    <a href="/tags/C/">
+                        <span class="chip bg-color">C#</span>
                     </a>
                     
                 </div>
@@ -987,13 +772,13 @@ a:hello()        -- 输出 hello test ，这个函数被重载了。</code></pre
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/01/03/LuaSource/">
+                <a href="/2021/01/09/LuaOOP/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="Lua源码笔记">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Lua实现面向对象">
                         
-                        <span class="card-title">Lua源码笔记</span>
+                        <span class="card-title">Lua实现面向对象</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1004,7 +789,7 @@ a:hello()        -- 输出 hello test ，这个函数被重载了。</code></pre
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-03
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-09
                             </span>
                         <span class="publish-author">
                             
